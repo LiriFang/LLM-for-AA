@@ -1,0 +1,21 @@
+#!/bin/sh
+set -eu
+
+max_bytes=$((50 * 1024 * 1024))
+
+oversized=$(
+git diff --cached --name-only --diff-filter=ACMR | while IFS= read -r path; do
+  [ -f "$path" ] || continue
+  size=$(wc -c < "$path" | tr -d ' ')
+  if [ "$size" -gt "$max_bytes" ]; then
+    printf '%s\t%s\n' "$size" "$path"
+  fi
+done
+)
+
+if [ -n "$oversized" ]; then
+  printf '%s\n' "Commit blocked because these staged files are larger than 50 MB:" >&2
+  printf '%s\n' "$oversized" >&2
+  printf '%s\n' "Move large files outside the repo or add a path-based ignore rule." >&2
+  exit 1
+fi

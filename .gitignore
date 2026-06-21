@@ -16,3 +16,6 @@ JCDL_2026.pdf
 .DS_Store
 .idea/
 .vscode/
+
+# Note: .gitignore cannot ignore files by size. This repo uses
+# .githooks/pre-commit to block staged files larger than 50 MB.
