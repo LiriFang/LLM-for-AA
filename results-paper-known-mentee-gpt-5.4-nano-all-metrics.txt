@@ -1,0 +1,35 @@
+Metrics for results-paper-known-mentee-gpt-5.4-nano-all.jsonl
+
+Primary binary setup:
+- Positive class: ground truth has a PhD advisor
+- Predicted positive: model outputs YES
+- Predicted negative: model outputs NO, UNCERTAIN, missing, or any non-YES label
+
+Advisor-identification setup:
+- Advisor TP: ground truth has a PhD advisor, model outputs YES with an advisor name, and the advisor name matches
+- Advisor FP: model outputs YES with an advisor name, but the ground truth has no advisor or the advisor name is wrong
+- Advisor FN: ground truth has a PhD advisor, but the model does not correctly name that advisor
+
+N: 1000
+TP: 303
+FP: 96
+TN: 204
+FN: 397
+
+Precision: 0.759
+Recall: 0.433
+F1: 0.551
+Binary accuracy (YES vs not-YES): 0.507
+
+Advisor TP: 164
+Advisor FP: 235
+Advisor FN: 536
+Advisor precision: 0.411
+Advisor recall: 0.234
+Advisor F1: 0.298
+
+Strict accuracy: 0.164 (164/1000)
+Advisor match rate, all rows: 0.186 (186/1000)
+Advisor match rate, ground-truth-positive rows: 0.266 (186/700)
+Uncertain rate: 0.066 (66/1000)
+Predicted label counts: {'NO': 535, 'UNCERTAIN': 66, 'YES': 399}

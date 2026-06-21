@@ -1,0 +1,18 @@
+# Python/local environment
+.venv/
+__pycache__/
+*.py[cod]
+
+# Paper draft directory requested to stay out of this repo
+JCDL26-LLM-for-AA/
+JCDL26-LLM-for_AA/
+JCDL_2026.pdf
+
+# Markdown notes, except the repository README
+*.md
+!README.md
+
+# Local editor and OS files
+.DS_Store
+.idea/
+.vscode/

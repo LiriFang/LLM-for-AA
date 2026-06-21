@@ -1,0 +1,22 @@
+Metrics for results-paper-known-mentee-gpt-5.4-nano-50.jsonl
+
+Primary binary setup:
+- Positive class: ground truth has a PhD advisor
+- Predicted positive: model outputs YES
+- Predicted negative: model outputs NO, UNCERTAIN, missing, or any non-YES label
+
+N: 50
+TP: 0
+FP: 0
+TN: 49
+FN: 1
+
+Precision: 0.000
+Recall: 0.000
+F1: 0.000
+Binary accuracy (YES vs not-YES): 0.980
+
+Strict accuracy: 0.000 (0/50)
+Advisor match rate: 0.020 (1/50)
+Uncertain rate: 0.920 (46/50)
+Predicted label counts: {'NO': 4, 'UNCERTAIN': 46}
