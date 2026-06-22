@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="560" viewBox="0 0 980 560">
+<rect width="100%" height="100%" fill="white"/>
+<text x="490.0" y="28.0" font-size="18" font-family="Arial, sans-serif" text-anchor="middle" font-weight="bold">Recall@1 by Dissertation Year Bin</text>
+<rect x="88.0" y="60" width="157.8" height="420" fill="#f7f7f7"/>
+<text x="166.9" y="78.0" font-size="11" font-family="Arial, sans-serif" text-anchor="middle" font-weight="normal">Old</text>
+<rect x="277.3" y="60" width="284.0" height="420" fill="#eef6ff"/>
+<text x="419.3" y="78.0" font-size="11" font-family="Arial, sans-serif" text-anchor="middle" font-weight="normal">Mid</text>
+<rect x="592.9" y="60" width="347.1" height="420" fill="#f4fbf1"/>
+<text x="766.4" y="78.0" font-size="11" font-family="Arial, sans-serif" text-anchor="middle" font-weight="normal">Recent</text>
+<line x1="245.8" x2="245.8" y1="60" y2="480" stroke="#555" stroke-dasharray="5,5"/>
+<line x1="592.9" x2="592.9" y1="60" y2="480" stroke="#555" stroke-dasharray="5,5"/>
+<line x1="88" x2="940" y1="480.0" y2="480.0" stroke="#ddd"/>
+<text x="78.0" y="484.0" font-size="11" font-family="Arial, sans-serif" text-anchor="end" font-weight="normal">0.00</text>
+<line x1="88" x2="940" y1="375.0" y2="375.0" stroke="#ddd"/>
+<text x="78.0" y="379.0" font-size="11" font-family="Arial, sans-serif" text-anchor="end" font-weight="normal">0.25</text>
+<line x1="88" x2="940" y1="270.0" y2="270.0" stroke="#ddd"/>
+<text x="78.0" y="274.0" font-size="11" font-family="Arial, sans-serif" text-anchor="end" font-weight="normal">0.50</text>
+<line x1="88" x2="940" y1="165.0" y2="165.0" stroke="#ddd"/>
+<text x="78.0" y="169.0" font-size="11" font-family="Arial, sans-serif" text-anchor="end" font-weight="normal">0.75</text>
+<line x1="88" x2="940" y1="60.0" y2="60.0" stroke="#ddd"/>
+<text x="78.0" y="64.0" font-size="11" font-family="Arial, sans-serif" text-anchor="end" font-weight="normal">1.00</text>
+<line x1="88" x2="88" y1="60" y2="480" stroke="#333"/>
+<line x1="88" x2="940" y1="480" y2="480" stroke="#333"/>
+<line x1="245.8" x2="245.8" y1="480" y2="485" stroke="#333"/>
+<text x="245.8" y="500.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="normal">1990</text>
+<line x1="561.3" x2="561.3" y1="480" y2="485" stroke="#333"/>
+<text x="561.3" y="500.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="normal">2000</text>
+<line x1="876.9" x2="876.9" y1="480" y2="485" stroke="#333"/>
+<text x="876.9" y="500.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="normal">2010</text>
+<polyline points="151.1,155.6 308.9,163.0 466.7,183.0 624.4,173.3 782.2,146.4 940.0,192.6" fill="none" stroke="#4C78A8" stroke-width="2.5"/>
+<circle cx="151.1" cy="155.6" r="3.2" fill="#4C78A8"/>
+<circle cx="308.9" cy="163.0" r="3.2" fill="#4C78A8"/>
+<circle cx="466.7" cy="183.0" r="3.2" fill="#4C78A8"/>
+<circle cx="624.4" cy="173.3" r="3.2" fill="#4C78A8"/>
+<circle cx="782.2" cy="146.4" r="3.2" fill="#4C78A8"/>
+<circle cx="940.0" cy="192.6" r="3.2" fill="#4C78A8"/>
+<polyline points="151.1,170.0 308.9,174.9 466.7,187.6 624.4,177.2 782.2,144.4 940.0,174.9" fill="none" stroke="#F58518" stroke-width="2.5"/>
+<circle cx="151.1" cy="170.0" r="3.2" fill="#F58518"/>
+<circle cx="308.9" cy="174.9" r="3.2" fill="#F58518"/>
+<circle cx="466.7" cy="187.6" r="3.2" fill="#F58518"/>
+<circle cx="624.4" cy="177.2" r="3.2" fill="#F58518"/>
+<circle cx="782.2" cy="144.4" r="3.2" fill="#F58518"/>
+<circle cx="940.0" cy="174.9" r="3.2" fill="#F58518"/>
+<polyline points="151.1,194.4 308.9,198.7 466.7,194.6 624.4,183.1 782.2,158.5 940.0,183.8" fill="none" stroke="#54A24B" stroke-width="2.5"/>
+<circle cx="151.1" cy="194.4" r="3.2" fill="#54A24B"/>
+<circle cx="308.9" cy="198.7" r="3.2" fill="#54A24B"/>
+<circle cx="466.7" cy="194.6" r="3.2" fill="#54A24B"/>
+<circle cx="624.4" cy="183.1" r="3.2" fill="#54A24B"/>
+<circle cx="782.2" cy="158.5" r="3.2" fill="#54A24B"/>
+<circle cx="940.0" cy="183.8" r="3.2" fill="#54A24B"/>
+<rect x="735" y="402" width="205" height="78" fill="white" fill-opacity="0.88" stroke="#ccc" rx="4"/>
+<line x1="745" x2="763" y1="422" y2="422" stroke="#4C78A8" stroke-width="3"/>
+<text x="770.0" y="426.0" font-size="12" font-family="Arial, sans-serif" text-anchor="start" font-weight="normal">Local trained model</text>
+<line x1="745" x2="763" y1="442" y2="442" stroke="#F58518" stroke-width="3"/>
+<text x="770.0" y="446.0" font-size="12" font-family="Arial, sans-serif" text-anchor="start" font-weight="normal">gpt-5.4-nano</text>
+<line x1="745" x2="763" y1="462" y2="462" stroke="#54A24B" stroke-width="3"/>
+<text x="770.0" y="466.0" font-size="12" font-family="Arial, sans-serif" text-anchor="start" font-weight="normal">gpt-5.4-mini</text>
+<text x="490.0" y="542.0" font-size="12" font-family="Arial, sans-serif" text-anchor="middle" font-weight="normal">Dissertation year bin</text>
+<text x="24.0" y="270.0" font-size="12" font-family="Arial, sans-serif" text-anchor="middle" font-weight="normal" transform="rotate(-90 24.0,270.0)">Recall@1</text>
+</svg>

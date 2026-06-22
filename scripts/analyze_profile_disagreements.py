@@ -15,10 +15,10 @@ from compute_ranking_metrics import normalize_name, reciprocal_rank, topk_hit
 from run_mentorship_benchmark import ProfileRankingRecord, load_profile_ranking_dataset
 
 
-DEFAULT_NANO = "results-profile-ranking-updated-gpt-5.4-nano-all.jsonl"
-DEFAULT_MINI = "results-profile-ranking-updated-gpt-5.4-mini-all.jsonl"
-DEFAULT_TSV = "llm_testing_set_advisee_complete_profile_updated.tsv"
-DEFAULT_PREFIX = "case_study_profile_disagreements"
+DEFAULT_NANO = "results/profile_level/results-profile-ranking-updated-gpt-5.4-nano-all.jsonl"
+DEFAULT_MINI = "results/profile_level/results-profile-ranking-updated-gpt-5.4-mini-all.jsonl"
+DEFAULT_TSV = "data/processed/llm_testing_set_advisee_complete_profile_updated.tsv"
+DEFAULT_PREFIX = "analysis/disagreement/case_study_profile_disagreements"
 
 
 def load_jsonl(path: Path) -> list[dict[str, object]]:

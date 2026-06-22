@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="520" viewBox="0 0 880 520">
+<rect width="100%" height="100%" fill="white"/>
+<text x="440.0" y="28.0" font-size="18" font-family="Arial, sans-serif" text-anchor="middle" font-weight="bold">Recall@1 by Dissertation Period</text>
+<line x1="80" x2="850" y1="435.0" y2="435.0" stroke="#ddd"/>
+<text x="70.0" y="439.0" font-size="11" font-family="Arial, sans-serif" text-anchor="end" font-weight="normal">0.00</text>
+<line x1="80" x2="850" y1="341.2" y2="341.2" stroke="#ddd"/>
+<text x="70.0" y="345.2" font-size="11" font-family="Arial, sans-serif" text-anchor="end" font-weight="normal">0.25</text>
+<line x1="80" x2="850" y1="247.5" y2="247.5" stroke="#ddd"/>
+<text x="70.0" y="251.5" font-size="11" font-family="Arial, sans-serif" text-anchor="end" font-weight="normal">0.50</text>
+<line x1="80" x2="850" y1="153.8" y2="153.8" stroke="#ddd"/>
+<text x="70.0" y="157.8" font-size="11" font-family="Arial, sans-serif" text-anchor="end" font-weight="normal">0.75</text>
+<line x1="80" x2="850" y1="60.0" y2="60.0" stroke="#ddd"/>
+<text x="70.0" y="64.0" font-size="11" font-family="Arial, sans-serif" text-anchor="end" font-weight="normal">1.00</text>
+<line x1="80" x2="80" y1="60" y2="435" stroke="#333"/>
+<line x1="80" x2="850" y1="435" y2="435" stroke="#333"/>
+<rect x="131.3" y="144.6" width="43.6" height="290.4" fill="#4C78A8"/>
+<text x="152.9" y="139.6" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="normal">0.77</text>
+<rect x="182.7" y="156.8" width="43.6" height="278.2" fill="#F58518"/>
+<text x="204.2" y="151.8" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="normal">0.74</text>
+<rect x="234.0" y="178.4" width="43.6" height="256.6" fill="#54A24B"/>
+<text x="255.6" y="173.4" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="normal">0.68</text>
+<text x="208.3" y="457.0" font-size="12" font-family="Arial, sans-serif" text-anchor="middle" font-weight="normal">old (n=399)</text>
+<rect x="388.0" y="167.1" width="43.6" height="267.9" fill="#4C78A8"/>
+<text x="409.6" y="162.1" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="normal">0.71</text>
+<rect x="439.3" y="171.9" width="43.6" height="263.1" fill="#F58518"/>
+<text x="460.9" y="166.9" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="normal">0.70</text>
+<rect x="490.7" y="183.8" width="43.6" height="251.2" fill="#54A24B"/>
+<text x="512.2" y="178.8" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="normal">0.67</text>
+<text x="465.0" y="457.0" font-size="12" font-family="Arial, sans-serif" text-anchor="middle" font-weight="normal">mid (n=315)</text>
+<rect x="644.7" y="153.8" width="43.6" height="281.2" fill="#4C78A8"/>
+<text x="666.2" y="148.8" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="normal">0.75</text>
+<rect x="696.0" y="152.2" width="43.6" height="282.8" fill="#F58518"/>
+<text x="717.6" y="147.2" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="normal">0.75</text>
+<rect x="747.3" y="160.8" width="43.6" height="274.2" fill="#54A24B"/>
+<text x="768.9" y="155.8" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="normal">0.73</text>
+<text x="721.7" y="457.0" font-size="12" font-family="Arial, sans-serif" text-anchor="middle" font-weight="normal">recent (n=480)</text>
+<rect x="100" y="485" width="14" height="14" fill="#4C78A8"/>
+<text x="120.0" y="497.0" font-size="12" font-family="Arial, sans-serif" text-anchor="start" font-weight="normal">Local trained model</text>
+<rect x="310" y="485" width="14" height="14" fill="#F58518"/>
+<text x="330.0" y="497.0" font-size="12" font-family="Arial, sans-serif" text-anchor="start" font-weight="normal">gpt-5.4-nano</text>
+<rect x="520" y="485" width="14" height="14" fill="#54A24B"/>
+<text x="540.0" y="497.0" font-size="12" font-family="Arial, sans-serif" text-anchor="start" font-weight="normal">gpt-5.4-mini</text>
+<text x="24.0" y="247.5" font-size="12" font-family="Arial, sans-serif" text-anchor="middle" font-weight="normal">Recall@1</text>
+</svg>

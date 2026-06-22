@@ -958,8 +958,8 @@ def parse_args(argv: Sequence[str]) -> argparse.Namespace:
     )
     parser.add_argument(
         "--csv",
-        default="testing_set.csv",
-        help="Path to the CSV/TSV dataset. Defaults to testing_set.csv.",
+        default="data/raw/testing_set.csv",
+        help="Path to the CSV/TSV dataset. Defaults to data/raw/testing_set.csv.",
     )
     parser.add_argument(
         "--model",
