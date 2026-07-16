@@ -1,0 +1,30 @@
+Metrics for results/profile_level/results-profile-ranking-v2-pub-ordered-gpt-5.4-nano-all.jsonl
+
+Dataset size: 1194 profile-ranking requests
+Ground truth: one advisor per profile
+
+Metric definitions:
+- Precision@k = number of requests where the ground-truth advisor appears in top k / (k * number of requests)
+- Recall@k = number of requests where the ground-truth advisor appears in top k / number of requests
+- For k=1, Precision@1 and Recall@1 are equivalent when every request has one top-1 prediction.
+- Missing or NONE rankings are counted as misses.
+
+LLM ranking:
+- Missing ranked lists: 0
+- Hits@1: 425 / 1194
+- Hits@5: 623 / 1194
+- Precision@1: 0.356
+- Recall@1: 0.356
+- Precision@5: 0.104
+- Recall@5: 0.522
+- MRR@5: 0.422
+
+Local trained model ranking:
+- Missing ranked lists: 0
+- Hits@1: 894 / 1194
+- Hits@5: 1158 / 1194
+- Precision@1: 0.749
+- Recall@1: 0.749
+- Precision@5: 0.194
+- Recall@5: 0.970
+- MRR@5: 0.842

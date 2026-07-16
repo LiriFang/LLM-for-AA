@@ -1,0 +1,24 @@
+Advisor-name baselines for data/processed/llm_test_set_at_paper_level.tsv
+
+Definitions: each baseline predicts one advisor name from the paper authors excluding the known advisee. Negative rows where the baseline predicts a name count as advisor false positives.
+
+Last non-advisee author baseline:
+- N: 1000
+- Ground-truth positive rows: 700
+- Advisor TP: 426
+- Advisor FP: 574
+- Advisor FN: 274
+- No prediction: 0
+- Advisor precision: 0.426
+- Advisor recall: 0.609
+- Advisor F1: 0.501
+
+Random non-advisee author baseline (1000 trials):
+- N: 1000
+- Ground-truth positive rows: 700
+- Advisor TP: 290.3 +/- 10.3
+- Advisor FP: 709.7 +/- 10.3
+- Advisor FN: 409.7 +/- 10.3
+- Advisor precision: 0.290 +/- 0.010
+- Advisor recall: 0.415 +/- 0.015
+- Advisor F1: 0.342 +/- 0.012

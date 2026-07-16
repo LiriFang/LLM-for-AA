@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="900" viewBox="0 0 1500 900">
+<rect width="100%" height="100%" fill="white"/>
+<text x="750.0" y="58.0" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="bold" text-anchor="middle" fill="#111">LLM correction rate when local model is wrong</text>
+<line x1="130" y1="760.0" x2="1250" y2="760.0" stroke="#dddddd" stroke-width="2"/>
+<text x="118.0" y="767.0" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="normal" text-anchor="end" fill="#111">0.00</text>
+<line x1="130" y1="593.8" x2="1250" y2="593.8" stroke="#dddddd" stroke-width="2"/>
+<text x="118.0" y="600.8" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="normal" text-anchor="end" fill="#111">0.05</text>
+<line x1="130" y1="427.5" x2="1250" y2="427.5" stroke="#dddddd" stroke-width="2"/>
+<text x="118.0" y="434.5" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="normal" text-anchor="end" fill="#111">0.10</text>
+<line x1="130" y1="261.3" x2="1250" y2="261.3" stroke="#dddddd" stroke-width="2"/>
+<text x="118.0" y="268.3" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="normal" text-anchor="end" fill="#111">0.15</text>
+<line x1="130" y1="95.0" x2="1250" y2="95.0" stroke="#dddddd" stroke-width="2"/>
+<text x="118.0" y="102.0" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="normal" text-anchor="end" fill="#111">0.20</text>
+<line x1="130" y1="95" x2="130" y2="760" stroke="#333" stroke-width="2"/>
+<line x1="130" y1="760" x2="1250" y2="760" stroke="#333" stroke-width="2"/>
+<line x1="130.0" y1="95" x2="130.0" y2="760" stroke="#eeeeee" stroke-width="1"/>
+<text x="130.0" y="803.0" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="normal" text-anchor="middle" fill="#111">&lt;0.05</text>
+<text x="130.0" y="832.0" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#111">wrong=83</text>
+<line x1="290.0" y1="95" x2="290.0" y2="760" stroke="#eeeeee" stroke-width="1"/>
+<text x="290.0" y="803.0" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="normal" text-anchor="middle" fill="#111">0.05-0.10</text>
+<text x="290.0" y="832.0" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#111">wrong=45</text>
+<line x1="450.0" y1="95" x2="450.0" y2="760" stroke="#eeeeee" stroke-width="1"/>
+<text x="450.0" y="803.0" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="normal" text-anchor="middle" fill="#111">0.10-0.15</text>
+<text x="450.0" y="832.0" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#111">wrong=39</text>
+<line x1="610.0" y1="95" x2="610.0" y2="760" stroke="#eeeeee" stroke-width="1"/>
+<text x="610.0" y="803.0" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="normal" text-anchor="middle" fill="#111">0.15-0.20</text>
+<text x="610.0" y="832.0" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#111">wrong=18</text>
+<line x1="770.0" y1="95" x2="770.0" y2="760" stroke="#eeeeee" stroke-width="1"/>
+<text x="770.0" y="803.0" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="normal" text-anchor="middle" fill="#111">0.20-0.30</text>
+<text x="770.0" y="832.0" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#111">wrong=30</text>
+<line x1="930.0" y1="95" x2="930.0" y2="760" stroke="#eeeeee" stroke-width="1"/>
+<text x="930.0" y="803.0" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="normal" text-anchor="middle" fill="#111">0.30-0.40</text>
+<text x="930.0" y="832.0" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#111">wrong=28</text>
+<line x1="1090.0" y1="95" x2="1090.0" y2="760" stroke="#eeeeee" stroke-width="1"/>
+<text x="1090.0" y="803.0" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="normal" text-anchor="middle" fill="#111">0.40-0.50</text>
+<text x="1090.0" y="832.0" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#111">wrong=24</text>
+<line x1="1250.0" y1="95" x2="1250.0" y2="760" stroke="#eeeeee" stroke-width="1"/>
+<text x="1250.0" y="803.0" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="normal" text-anchor="middle" fill="#111">&gt;=0.50</text>
+<text x="1250.0" y="832.0" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#111">wrong=33</text>
+<polyline points="130.0,119.0 290.0,316.7 450.0,333.7 610.0,575.3 770.0,538.3 930.0,522.5 1090.0,621.5 1250.0,558.5" fill="none" stroke="#008C8C" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="130.0" cy="119.0" r="8" fill="#008C8C" stroke="white" stroke-width="2"/>
+<text x="130.0" y="156.0" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#111">0.19</text>
+<circle cx="290.0" cy="316.7" r="8" fill="#008C8C" stroke="white" stroke-width="2"/>
+<text x="290.0" y="353.7" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#111">0.13</text>
+<circle cx="450.0" cy="333.7" r="8" fill="#008C8C" stroke="white" stroke-width="2"/>
+<text x="450.0" y="316.7" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#111">0.13</text>
+<circle cx="610.0" cy="575.3" r="8" fill="#008C8C" stroke="white" stroke-width="2"/>
+<text x="610.0" y="612.3" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#111">0.06</text>
+<circle cx="770.0" cy="538.3" r="8" fill="#008C8C" stroke="white" stroke-width="2"/>
+<text x="770.0" y="521.3" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#111">0.07</text>
+<circle cx="930.0" cy="522.5" r="8" fill="#008C8C" stroke="white" stroke-width="2"/>
+<text x="930.0" y="559.5" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#111">0.07</text>
+<circle cx="1090.0" cy="621.5" r="8" fill="#008C8C" stroke="white" stroke-width="2"/>
+<text x="1090.0" y="604.5" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#111">0.04</text>
+<circle cx="1250.0" cy="558.5" r="8" fill="#008C8C" stroke="white" stroke-width="2"/>
+<text x="1250.0" y="595.5" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#111">0.06</text>
+<polyline points="130.0,639.8 290.0,760.0 450.0,760.0 610.0,760.0 770.0,760.0 930.0,760.0 1090.0,760.0 1250.0,760.0" fill="none" stroke="#C75D2C" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="122.0" y="631.8" width="16" height="16" fill="#C75D2C" stroke="white" stroke-width="2"/>
+<text x="130.0" y="622.8" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#111">0.04</text>
+<rect x="282.0" y="752.0" width="16" height="16" fill="#C75D2C" stroke="white" stroke-width="2"/>
+<text x="290.0" y="743.0" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#111">0.00</text>
+<rect x="442.0" y="752.0" width="16" height="16" fill="#C75D2C" stroke="white" stroke-width="2"/>
+<text x="450.0" y="743.0" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#111">0.00</text>
+<rect x="602.0" y="752.0" width="16" height="16" fill="#C75D2C" stroke="white" stroke-width="2"/>
+<text x="610.0" y="743.0" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#111">0.00</text>
+<rect x="762.0" y="752.0" width="16" height="16" fill="#C75D2C" stroke="white" stroke-width="2"/>
+<text x="770.0" y="743.0" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#111">0.00</text>
+<rect x="922.0" y="752.0" width="16" height="16" fill="#C75D2C" stroke="white" stroke-width="2"/>
+<text x="930.0" y="743.0" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#111">0.00</text>
+<rect x="1082.0" y="752.0" width="16" height="16" fill="#C75D2C" stroke="white" stroke-width="2"/>
+<text x="1090.0" y="743.0" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#111">0.00</text>
+<rect x="1242.0" y="752.0" width="16" height="16" fill="#C75D2C" stroke="white" stroke-width="2"/>
+<text x="1250.0" y="743.0" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="normal" text-anchor="middle" fill="#111">0.00</text>
+<text x="690.0" y="872.0" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="normal" text-anchor="middle" fill="#111">Local model margin: P(rank 1) - P(rank 2)</text>
+<text x="30.0" y="427.5" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="normal" text-anchor="middle" fill="#111" transform="rotate(-90 30 427.5)">Correction rate among local-wrong cases</text>
+<line x1="950" y1="123" x2="980" y2="123" stroke="#008C8C" stroke-width="5" stroke-linecap="round"/>
+<circle cx="967" cy="123" r="8" fill="#008C8C" stroke="white" stroke-width="2"/>
+<text x="984.0" y="130.0" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="normal" text-anchor="start" fill="#111">mini correction rate</text>
+<line x1="950" y1="161" x2="980" y2="161" stroke="#C75D2C" stroke-width="5" stroke-linecap="round"/>
+<rect x="959" y="153" width="16" height="16" fill="#C75D2C" stroke="white" stroke-width="2"/>
+<text x="984.0" y="168.0" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="normal" text-anchor="start" fill="#111">nano correction rate</text>
+</svg>

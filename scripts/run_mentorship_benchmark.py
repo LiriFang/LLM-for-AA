@@ -9,6 +9,7 @@ import json
 import os
 import re
 import sys
+import threading
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
@@ -29,6 +30,7 @@ PAPER_MODES = {
     "paper-web-search",
     "paper-no-search",
     "paper-known-mentee",
+    "paper-known-mentee-v2",
 }
 
 PROFILE_MODES = {
@@ -36,12 +38,21 @@ PROFILE_MODES = {
     "profile-web-search",
     "profile-ranking",
     "profile-ranking-web-search",
+    "profile-ranking-v2",
+    "profile-reranking-v2",
 }
 
 RANKING_MODES = {
     "profile-ranking",
     "profile-ranking-web-search",
+    "profile-ranking-v2",
+    "profile-reranking-v2",
 }
+
+DEFAULT_PROFILE_RANKING_TEMPLATE_V2 = Path("prompts/profile_ranking_prompt_template_v2.txt")
+DEFAULT_PROFILE_RERANKING_TEMPLATE_V2 = Path("prompts/profile_rereanking_prompt_template_v2.txt")
+DEFAULT_CLASSIFICATION_TEMPLATE_V2 = Path("prompts/classification_prompt_template_with_prof_v2.txt")
+APPEND_LOCK = threading.Lock()
 
 
 @dataclass
@@ -251,9 +262,16 @@ def build_prompt(
     papers: Sequence[PaperRecord],
     profile_owner: str | None = None,
     collect_evidence: bool = False,
+    template_path: Path | None = None,
 ) -> str:
     if not papers:
         raise ValueError("No papers supplied for prompt construction.")
+    if mode == "paper-known-mentee-v2":
+        return build_classification_template_prompt(
+            papers=papers,
+            profile_owner=profile_owner,
+            template_path=template_path or DEFAULT_CLASSIFICATION_TEMPLATE_V2,
+        )
 
     allow_web_search = mode in {"paper-web-search", "profile-web-search"}
     known_mentee = mode in {"paper-known-mentee", "profile-no-search", "profile-web-search"}
@@ -361,11 +379,39 @@ def build_prompt(
     return "\n".join(prompt_parts)
 
 
+def build_classification_template_prompt(
+    papers: Sequence[PaperRecord],
+    profile_owner: str | None,
+    template_path: Path,
+) -> str:
+    if not papers:
+        raise ValueError("No papers supplied for prompt construction.")
+    template = template_path.read_text(encoding="utf-8")
+    advisee_name = profile_owner or papers[0].advisee_name
+    prompt = template.replace("[ADVISEE_NAME]", advisee_name)
+    paper_block = "\n".join(f'"{paper.paper_text()}"' for paper in papers)
+    prompt = prompt.replace(
+        '"[PAPER_1_METADATA]"\n"[PAPER_2_METADATA]"\n...\n"[PAPER_N_METADATA]"',
+        paper_block,
+    )
+    prompt = replace_numbered_placeholders(prompt, "PAPER", [paper.paper_text() for paper in papers])
+    return prompt.strip() + "\n"
+
+
 def build_profile_ranking_prompt(
     mode: str,
     record: ProfileRankingRecord,
     max_papers_per_profile: int,
+    template_path: Path | None = None,
 ) -> str:
+    if mode in {"profile-ranking-v2", "profile-reranking-v2"}:
+        return build_profile_template_prompt(
+            mode=mode,
+            record=record,
+            max_papers_per_profile=max_papers_per_profile,
+            template_path=template_path,
+        )
+
     allow_web_search = mode == "profile-ranking-web-search"
     papers = record.papers[:max_papers_per_profile]
     if not papers:
@@ -440,6 +486,74 @@ def build_profile_ranking_prompt(
         ]
     )
     return "\n".join(prompt_parts)
+
+
+def default_profile_template_path(mode: str) -> Path:
+    if mode == "profile-ranking-v2":
+        return DEFAULT_PROFILE_RANKING_TEMPLATE_V2
+    if mode == "profile-reranking-v2":
+        return DEFAULT_PROFILE_RERANKING_TEMPLATE_V2
+    raise ValueError(f"No default profile template for mode: {mode}")
+
+
+def render_paper_list(papers: Sequence[PaperRecord]) -> str:
+    return "\n".join(
+        f'{index}. "{paper.paper_text()}"'
+        for index, paper in enumerate(papers, start=1)
+    )
+
+
+def render_candidate_list(record: ProfileRankingRecord) -> str:
+    lines: list[str] = []
+    for rank in range(1, 6):
+        candidate = record.model_candidates[rank - 1] if rank <= len(record.model_candidates) else "NONE"
+        probability = record.model_probabilities[rank - 1] if rank <= len(record.model_probabilities) else "N/A"
+        lines.append(f"{rank}. {candidate} (prior probability: {probability})")
+    return "\n".join(lines)
+
+
+def replace_numbered_placeholders(template: str, prefix: str, values: Sequence[str]) -> str:
+    text = template
+    for index, value in enumerate(values, start=1):
+        text = text.replace(f"[{prefix}_{index}]", value)
+    text = re.sub(rf"\[{re.escape(prefix)}_\d+\]", "NONE", text)
+    return text
+
+
+def build_profile_template_prompt(
+    mode: str,
+    record: ProfileRankingRecord,
+    max_papers_per_profile: int,
+    template_path: Path | None = None,
+) -> str:
+    papers = record.papers[:max_papers_per_profile]
+    if not papers:
+        raise ValueError("No papers supplied for prompt construction.")
+
+    path = template_path or default_profile_template_path(mode)
+    template = path.read_text(encoding="utf-8")
+
+    replacements = {
+        "[ADVISEE_NAME]": record.advisee_name,
+        '1. "[PAPER_1_METADATA]"\n2. "[PAPER_2_METADATA]"\n3. "[PAPER_3_METADATA]"\n...\nN. "[PAPER_N_METADATA]"': render_paper_list(papers),
+    }
+    if mode == "profile-reranking-v2":
+        replacements[
+            "1. [CANDIDATE_1] (prior probability: [PROBABILITY_1])\n"
+            "2. [CANDIDATE_2] (prior probability: [PROBABILITY_2])\n"
+            "3. [CANDIDATE_3] (prior probability: [PROBABILITY_3])\n"
+            "4. [CANDIDATE_4] (prior probability: [PROBABILITY_4])\n"
+            "5. [CANDIDATE_5] (prior probability: [PROBABILITY_5])"
+        ] = render_candidate_list(record)
+
+    prompt = template
+    for placeholder, value in replacements.items():
+        prompt = prompt.replace(placeholder, value)
+
+    prompt = replace_numbered_placeholders(prompt, "PAPER", [paper.paper_text() for paper in papers])
+    prompt = replace_numbered_placeholders(prompt, "CANDIDATE", record.model_candidates[:5])
+    prompt = replace_numbered_placeholders(prompt, "PROBABILITY", record.model_probabilities[:5])
+    return prompt.strip() + "\n"
 
 
 def select_paper_records(
@@ -563,11 +677,15 @@ def parse_response(mode: str, text: str) -> dict[str, str | None]:
         if not line:
             continue
         lowered = line.lower()
-        if lowered.startswith("phd advisor relationship:") or lowered.startswith("mentorship detected:"):
+        if (
+            lowered.startswith("phd advisor relationship:")
+            or lowered.startswith("advisor relationship:")
+            or lowered.startswith("mentorship detected:")
+        ):
             result["mentorship_detected"] = line.split(":", 1)[1].strip().upper()
         elif lowered.startswith("phd advisee:") or lowered.startswith("mentee:"):
             result["mentee"] = line.split(":", 1)[1].strip()
-        elif lowered.startswith("phd advisor:") or lowered.startswith("mentor:"):
+        elif lowered.startswith("phd advisor:") or lowered.startswith("advisor:") or lowered.startswith("mentor:"):
             result["mentor"] = line.split(":", 1)[1].strip()
         elif lowered.startswith("confidence:"):
             result["confidence"] = line.split(":", 1)[1].strip().upper()
@@ -648,11 +766,20 @@ def parse_profile_ranking_response(text: str) -> dict[str, object]:
     ranked_advisors.sort(key=lambda item: int(item["rank"]))
     result["ranked_advisors"] = ranked_advisors
 
-    if not result["top1_advisor"] and ranked_advisors:
+    if (
+        (not result["top1_advisor"] or normalize_name(str(result["top1_advisor"])) == normalize_name("none"))
+        and ranked_advisors
+    ):
         result["top1_advisor"] = ranked_advisors[0]["advisor"]
-    if not result["top1_confidence"] and ranked_advisors:
+    if (
+        (not result["top1_confidence"] or normalize_name(str(result["top1_confidence"])) == normalize_name("none"))
+        and ranked_advisors
+    ):
         result["top1_confidence"] = ranked_advisors[0]["confidence"]
-    if not result["top1_source"] and ranked_advisors:
+    if (
+        (not result["top1_source"] or normalize_name(str(result["top1_source"])) == normalize_name("none"))
+        and ranked_advisors
+    ):
         result["top1_source"] = ranked_advisors[0]["source"]
 
     return result
@@ -701,9 +828,9 @@ def evaluate_profile_ranking_result(
     ground_truth_mentor = record.advisor_name
     ranked_items = parsed.get("ranked_advisors") or []
     ranked_advisors = [
-        str(item.get("advisor") or "")
+        "" if normalize_name(str(item.get("advisor") or "")) == normalize_name("none") else str(item.get("advisor") or "")
         for item in ranked_items
-        if isinstance(item, dict) and normalize_name(str(item.get("advisor") or "")) != normalize_name("none")
+        if isinstance(item, dict)
     ]
     top1_advisor = str(parsed.get("top1_advisor") or "")
     if normalize_name(top1_advisor) == normalize_name("none"):
@@ -780,9 +907,48 @@ def call_openai(mode: str, model: str, prompt: str) -> tuple[str, object]:
 
 
 def write_results(output_path: Path, results: Sequence[dict[str, object]]) -> None:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     with output_path.open("w", encoding="utf-8") as handle:
         for result in results:
             handle.write(json.dumps(result, ensure_ascii=False) + "\n")
+
+
+def append_result(output_path: Path | None, result: dict[str, object]) -> None:
+    if output_path is None:
+        return
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with APPEND_LOCK:
+        with output_path.open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(result, ensure_ascii=False) + "\n")
+
+
+def load_existing_results(path: Path) -> list[dict[str, object]]:
+    if not path.exists():
+        return []
+    rows: list[dict[str, object]] = []
+    with path.open(encoding="utf-8") as handle:
+        for line_number, line in enumerate(handle, start=1):
+            if not line.strip():
+                continue
+            try:
+                rows.append(json.loads(line))
+            except json.JSONDecodeError as error:
+                raise SystemExit(f"Invalid JSON in {path} line {line_number}: {error}") from error
+    return rows
+
+
+def completed_row_numbers(rows: Sequence[dict[str, object]]) -> set[int]:
+    completed: set[int] = set()
+    for row in rows:
+        values = row.get("row_numbers") or []
+        if not isinstance(values, list):
+            continue
+        for value in values:
+            try:
+                completed.add(int(value))
+            except (TypeError, ValueError):
+                continue
+    return completed
 
 
 def metrics_output_path(output_path: Path) -> Path:
@@ -854,11 +1020,14 @@ def run_parallel_jobs(
     jobs: Sequence[tuple[int, str, object]],
     worker,
     parallelism: int,
+    output_path: Path | None = None,
 ) -> list[dict[str, object]]:
     results: list[dict[str, object] | None] = [None] * len(jobs)
     if parallelism <= 1:
         for index, label, payload in jobs:
-            results[index - 1] = worker(index, label, payload)
+            result = worker(index, label, payload)
+            results[index - 1] = result
+            append_result(output_path, result)
         return [result for result in results if result is not None]
 
     with ThreadPoolExecutor(max_workers=parallelism) as executor:
@@ -869,7 +1038,9 @@ def run_parallel_jobs(
         for future in as_completed(future_to_job):
             index, label = future_to_job[future]
             try:
-                results[index - 1] = future.result()
+                result = future.result()
+                results[index - 1] = result
+                append_result(output_path, result)
             except Exception as error:
                 raise RuntimeError(f"Request {index} ({label}) failed.") from error
 
@@ -882,10 +1053,16 @@ def run_profile_ranking_request(
     index: int,
     record: ProfileRankingRecord,
 ) -> dict[str, object]:
+    profile_template = (
+        str(args.profile_template or default_profile_template_path(args.mode))
+        if args.mode in {"profile-ranking-v2", "profile-reranking-v2"}
+        else None
+    )
     prompt = build_profile_ranking_prompt(
         args.mode,
         record,
         max_papers_per_profile=args.max_papers_per_profile,
+        template_path=Path(args.profile_template) if args.profile_template else None,
     )
     response_text, response = call_openai(args.mode, args.model, prompt)
     parsed = parse_profile_ranking_response(response_text)
@@ -894,6 +1071,7 @@ def run_profile_ranking_request(
         "mode": args.mode,
         "model": args.model,
         "collect_evidence": args.collect_evidence,
+        "profile_template": profile_template,
         "advisee_id": record.advisee_id,
         "advisee_name": record.advisee_name,
         "pmids": [paper.pmid for paper in record.papers[: args.max_papers_per_profile]],
@@ -920,11 +1098,17 @@ def run_classification_request(
     advisee_name: str,
     papers: list[PaperRecord],
 ) -> dict[str, object]:
+    classification_template = (
+        str(args.classification_template or DEFAULT_CLASSIFICATION_TEMPLATE_V2)
+        if args.mode == "paper-known-mentee-v2"
+        else None
+    )
     prompt = build_prompt(
         args.mode,
         papers,
         profile_owner=advisee_name,
         collect_evidence=args.collect_evidence,
+        template_path=Path(args.classification_template) if args.classification_template else None,
     )
     response_text, response = call_openai(args.mode, args.model, prompt)
     parsed = parse_response(args.mode, response_text)
@@ -933,6 +1117,7 @@ def run_classification_request(
         "mode": args.mode,
         "model": args.model,
         "collect_evidence": args.collect_evidence,
+        "classification_template": classification_template,
         "advisee_name": advisee_name,
         "pmids": [paper.pmid for paper in papers],
         "row_numbers": [paper.row_number for paper in papers],
@@ -998,8 +1183,27 @@ def parse_args(argv: Sequence[str]) -> argparse.Namespace:
         help="Maximum number of papers to include in profile modes. Defaults to 10 earliest papers.",
     )
     parser.add_argument(
+        "--profile-template",
+        help=(
+            "Optional prompt template path for profile-ranking-v2/profile-reranking-v2. "
+            "Defaults to the matching template in prompts/."
+        ),
+    )
+    parser.add_argument(
+        "--classification-template",
+        help=(
+            "Optional prompt template path for paper-known-mentee-v2. "
+            "Defaults to prompts/classification_prompt_template_with_prof_v2.txt."
+        ),
+    )
+    parser.add_argument(
         "--output",
         help="Optional JSONL output path for raw results.",
+    )
+    parser.add_argument(
+        "--resume",
+        action="store_true",
+        help="Resume from an existing --output JSONL by skipping completed row_numbers.",
     )
     parser.add_argument(
         "--parallelism",
@@ -1053,6 +1257,16 @@ def main(argv: Sequence[str]) -> int:
         args.limit = None
     if args.parallelism < 1:
         raise SystemExit("--parallelism must be at least 1.")
+    output_path = Path(args.output) if args.output else None
+    existing_results: list[dict[str, object]] = []
+    completed_rows: set[int] = set()
+    if args.resume:
+        if output_path is None:
+            raise SystemExit("--resume requires --output.")
+        existing_results = load_existing_results(output_path)
+        completed_rows = completed_row_numbers(existing_results)
+        if existing_results:
+            print(f"Loaded {len(existing_results)} existing result(s) from {output_path}.")
 
     if args.mode in RANKING_MODES:
         ranking_records = load_profile_ranking_dataset(Path(args.csv))
@@ -1062,7 +1276,18 @@ def main(argv: Sequence[str]) -> int:
             advisees=args.advisee,
             limit=args.limit,
         )
+        if completed_rows:
+            before_count = len(ranking_requests)
+            ranking_requests = [
+                record for record in ranking_requests if record.row_number not in completed_rows
+            ]
+            print(f"Skipping {before_count - len(ranking_requests)} completed profile row(s).")
         if not ranking_requests:
+            if existing_results:
+                print("No remaining profile rows to run.")
+                print(summarize_results(existing_results))
+                emit_metrics_report(args.mode, existing_results, output_path)
+                return 0
             raise SystemExit("No dataset rows matched the provided filters.")
 
         if args.dry_run:
@@ -1071,6 +1296,7 @@ def main(argv: Sequence[str]) -> int:
                     args.mode,
                     record,
                     max_papers_per_profile=args.max_papers_per_profile,
+                    template_path=Path(args.profile_template) if args.profile_template else None,
                 )
                 print(f"=== Request {index}: {record.advisee_name} ===")
                 print(prompt)
@@ -1086,7 +1312,10 @@ def main(argv: Sequence[str]) -> int:
             for index, record in enumerate(ranking_requests, start=1)
         ]
 
-        results = run_parallel_jobs(
+        if output_path and not args.resume and output_path.exists():
+            raise SystemExit(f"{output_path} already exists. Use --resume or choose a new --output path.")
+
+        new_results = run_parallel_jobs(
             jobs,
             worker=lambda index, _label, record: run_profile_ranking_request(
                 args,
@@ -1095,11 +1324,11 @@ def main(argv: Sequence[str]) -> int:
                 record,
             ),
             parallelism=args.parallelism,
+            output_path=output_path,
         )
 
-        output_path = Path(args.output) if args.output else None
+        results = existing_results + new_results
         if output_path:
-            write_results(output_path, results)
             print(f"Wrote results to {output_path}")
 
         print(summarize_results(results))
@@ -1108,8 +1337,21 @@ def main(argv: Sequence[str]) -> int:
 
     records = load_dataset(Path(args.csv))
     requests = list(iter_requests(args, records))
+    if completed_rows:
+        before_count = len(requests)
+        requests = [
+            (advisee_name, papers)
+            for advisee_name, papers in requests
+            if not any(paper.row_number in completed_rows for paper in papers)
+        ]
+        print(f"Skipping {before_count - len(requests)} completed paper/profile request(s).")
 
     if not requests:
+        if existing_results:
+            print("No remaining requests to run.")
+            print(summarize_results(existing_results))
+            emit_metrics_report(args.mode, existing_results, output_path)
+            return 0
         raise SystemExit("No dataset rows matched the provided filters.")
 
     if args.dry_run:
@@ -1119,6 +1361,7 @@ def main(argv: Sequence[str]) -> int:
                 papers,
                 profile_owner=advisee_name,
                 collect_evidence=args.collect_evidence,
+                template_path=Path(args.classification_template) if args.classification_template else None,
             )
             print(f"=== Request {index}: {advisee_name} ===")
             print(prompt)
@@ -1133,7 +1376,10 @@ def main(argv: Sequence[str]) -> int:
         (index, advisee_name, (advisee_name, papers))
         for index, (advisee_name, papers) in enumerate(requests, start=1)
     ]
-    results = run_parallel_jobs(
+    if output_path and not args.resume and output_path.exists():
+        raise SystemExit(f"{output_path} already exists. Use --resume or choose a new --output path.")
+
+    new_results = run_parallel_jobs(
         jobs,
         worker=lambda index, _label, payload: run_classification_request(
             args,
@@ -1143,11 +1389,11 @@ def main(argv: Sequence[str]) -> int:
             payload[1],
         ),
         parallelism=args.parallelism,
+        output_path=output_path,
     )
 
-    output_path = Path(args.output) if args.output else None
+    results = existing_results + new_results
     if output_path:
-        write_results(output_path, results)
         print(f"Wrote results to {output_path}")
 
     print(summarize_results(results))
